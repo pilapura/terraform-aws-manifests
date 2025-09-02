@@ -1,13 +1,14 @@
 resource "aws_vpc" "vpc_demo" {
   # Arguments
-  region               = "us-east-1"
-  cidr_block           = "10.160.0.0/16"
-  enable_dns_support   = true
-  enable_dns_hostnames = true
+  cidr_block           = var.cidr_block
+  enable_dns_support   = var.dns_support
+  enable_dns_hostnames = var.dns_hostnames
 
-  tags = {
-    "Name"        = "TerraformDemo"
-    "Environment" = "Development"
-    "Iac"         = "Terraform"
+  lifecycle {
+   #ignore_changes = [cidr_block]
+   #prevent_destroy = true
+   #create_before_destroy = true
   }
+
+  tags = merge(var.vpc_tags, local.common_tags)
 }
